@@ -1,0 +1,133 @@
+<ActionBar [title]="isEditMode ? 'Edytuj Produkt' : 'Nowy Produkt'">
+  <NavigationButton
+    text="Anuluj"
+    android.systemIcon="ic_menu_close"
+    (tap)="router.back()"
+  ></NavigationButton>
+</ActionBar>
+
+<ScrollView>
+  <StackLayout padding="20" ngForm #productForm="ngForm">
+    <Label
+      text="Informacje o produkcie"
+      class="h2 m-b-10"
+      fontWeight="bold"
+    ></Label>
+
+    <Label
+      text="Nazwa *"
+      class="h3"
+      [color]="nameModel.invalid && nameModel.touched ? 'red' : 'black'"
+    ></Label>
+    <TextField
+      [(ngModel)]="product.name"
+      name="prodName"
+      #nameModel="ngModel"
+      required
+      hint="Nazwa produktu..."
+      class="input m-b-15"
+      [class.input-error]="nameModel.invalid && nameModel.touched"
+    ></TextField>
+
+    <Label
+      text="Kod kreskowy *"
+      class="h3"
+      [color]="codeModel.invalid && codeModel.touched ? 'red' : 'black'"
+    ></Label>
+    <GridLayout columns="*, auto" class="m-b-15">
+      <TextField
+        col="0"
+        [(ngModel)]="product.code"
+        name="prodCode"
+        #codeModel="ngModel"
+        required
+        hint="Kod..."
+        class="input"
+        [class.input-error]="codeModel.invalid && codeModel.touched"
+      ></TextField>
+      <Button
+        col="1"
+        text="SKANUJ"
+        (tap)="onScan()"
+        class="btn btn-primary"
+      ></Button>
+    </GridLayout>
+
+    <Label
+      text="Status *"
+      class="h3"
+      [color]="statusModel.invalid && statusModel.touched ? 'red' : 'black'"
+    ></Label>
+    <TextField
+      [(ngModel)]="product.status"
+      name="prodStatus"
+      #statusModel="ngModel"
+      required
+      hint="Dostępny, Brak itp..."
+      class="input m-b-15"
+      [class.input-error]="statusModel.invalid && statusModel.touched"
+    ></TextField>
+
+    <Label
+      text="Opis *"
+      class="h3"
+      [color]="descModel.invalid && descModel.touched ? 'red' : 'black'"
+    ></Label>
+    <TextView
+      [(ngModel)]="product.description"
+      name="prodDesc"
+      #descModel="ngModel"
+      required
+      hint="Opis przedmiotu..."
+      class="input m-b-15"
+      height="80"
+      [class.input-error]="descModel.invalid && descModel.touched"
+    ></TextView>
+
+    <Label text="Zdjęcie *" class="h3"></Label>
+
+    <Image
+      *ngIf="isImageValid()"
+      [src]="product.image"
+      height="150"
+      stretch="aspectFit"
+      class="m-v-10"
+      backgroundColor="#f0f0f0"
+    ></Image>
+
+    <Image
+      *ngIf="!isImageValid()"
+      src="res://icon"
+      height="150"
+      alpha="0.2"
+      stretch="aspectFit"
+      class="m-v-10"
+    ></Image>
+
+    <Label
+      text="Musisz dodać zdjęcie produktu!"
+      *ngIf="!isImageValid()"
+      color="red"
+      fontSize="12"
+      class="m-b-10"
+    >
+    </Label>
+
+    <Button
+      text="ZRÓB ZDJĘCIE"
+      (tap)="onTakePhoto()"
+      class="btn btn-outline"
+    ></Button>
+
+    <Button
+      [text]="isEditMode ? 'ZAPISZ ZMIANY' : 'DODAJ PRODUKT'"
+      (tap)="onSave()"
+      [isEnabled]="productForm.valid && isImageValid()"
+      class="btn btn-active m-t-20"
+      [backgroundColor]="
+        productForm.valid && isImageValid() ? '#3A53FF' : '#cccccc'
+      "
+      color="white"
+    ></Button>
+  </StackLayout>
+</ScrollView>
