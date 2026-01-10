@@ -1,0 +1,86 @@
+<ActionBar [title]="product?.name || 'Szczegóły'">
+  <NavigationButton
+    text="Wstecz"
+    android.systemIcon="ic_menu_back"
+    (tap)="goBack()"
+  ></NavigationButton>
+</ActionBar>
+
+<ScrollView>
+  <StackLayout padding="20" *ngIf="product">
+    <Image
+      *ngIf="product.image && product.image.startsWith('http')"
+      [src]="product.image"
+      height="250"
+      stretch="aspectFit"
+      class="m-b-20"
+    >
+    </Image>
+
+    <StackLayout
+      *ngIf="!product.image || !product.image.startsWith('http')"
+      height="200"
+      backgroundColor="#eeeeee"
+      verticalAlignment="center"
+      class="m-b-20"
+    >
+      <Label
+        text=""
+        class="nt-icon"
+        fontSize="50"
+        horizontalAlignment="center"
+        color="#cccccc"
+      ></Label>
+      <Label
+        text="Brak zdjęcia"
+        horizontalAlignment="center"
+        color="#999999"
+      ></Label>
+    </StackLayout>
+
+    <Label
+      [text]="product.name"
+      class="h1"
+      fontWeight="bold"
+      textWrap="true"
+    ></Label>
+    <Label [text]="'Kod: ' + product.code" class="h2" color="#3A53FF"></Label>
+    <Label
+      [text]="'Status: ' + (product.status || 'Brak danych')"
+      class="h3"
+      color="gray"
+    ></Label>
+
+    <StackLayout class="hr m-v-15"></StackLayout>
+
+    <Label
+      text="Opis produktu:"
+      fontWeight="bold"
+      fontSize="16"
+      class="m-b-5"
+    ></Label>
+    <Label
+      [text]="product.description || 'Brak opisu dla tego produktu.'"
+      textWrap="true"
+      fontSize="15"
+      class="m-b-20"
+    ></Label>
+
+    <GridLayout columns="*, *" class="m-t-20">
+      <Button
+        col="0"
+        text="EDYTUJ"
+        (tap)="editProduct()"
+        class="btn btn-outline p-10 m-5"
+      ></Button>
+      <Button
+        col="1"
+        text="USUŃ"
+        (tap)="deleteProduct()"
+        class="btn btn-danger p-10 m-5"
+        color="white"
+        backgroundColor="#FF3B30"
+      ></Button>
+    </GridLayout>
+  </StackLayout>
+</ScrollView>

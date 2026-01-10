@@ -1,0 +1,48 @@
+<ActionBar title="Lista produktów">
+  <ActionItem
+    text="Dodaj"
+    android.position="actionBar"
+    (tap)="onAdd()"
+  ></ActionItem>
+</ActionBar>
+
+<GridLayout rows="*">
+  <ActivityIndicator
+    [busy]="loading"
+    [visibility]="loading ? 'visible' : 'collapse'"
+    verticalAlignment="center"
+  ></ActivityIndicator>
+
+  <ListView [items]="products" (itemTap)="onItemTap($event)" *ngIf="!loading">
+    <ng-template let-item="item">
+      <StackLayout padding="10">
+        <GridLayout columns="*, auto">
+          <StackLayout col="0">
+            <Label [text]="item.name" fontSize="18" fontWeight="bold"></Label>
+            <Label
+              [text]="'Kod: ' + item.code"
+              fontSize="14"
+              color="gray"
+            ></Label>
+          </StackLayout>
+
+          <Label
+            col="1"
+            [text]="item.status || 'Brak'"
+            verticalAlignment="center"
+            class="status-tag"
+            [color]="item.status === 'Dostępny' ? 'green' : 'orange'"
+          >
+          </Label>
+        </GridLayout>
+      </StackLayout>
+    </ng-template>
+  </ListView>
+
+  <Label
+    *ngIf="error"
+    [text]="error"
+    color="red"
+    horizontalAlignment="center"
+  ></Label>
+</GridLayout>
